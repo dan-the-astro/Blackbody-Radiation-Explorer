@@ -1,0 +1,91 @@
+﻿# Blackbody Radiation Explorer
+
+A Windows Forms application for visualizing blackbody emission spectra at different temperatures using Planck's law.
+
+## Features
+
+### 1. **Interactive Spectrum Visualization**
+- Displays spectral radiance vs. wavelength for blackbody radiation
+- Logarithmic Y-axis for better visualization across orders of magnitude
+- Automatic Y-axis scaling based on displayed curves
+- Multiple temperature curves can be plotted simultaneously
+
+### 2. **Temperature Control**
+- Add temperatures from 100 K to 50,000 K
+- Default temperatures include:
+  - 3000 K (Incandescent light bulb)
+  - 5778 K (Sun's surface temperature)
+  - 8000 K (Hot star)
+- Remove individual temperature curves
+- Each curve is color-coded with a legend
+
+### 3. **Wavelength Range Adjustment**
+- Customize the X-axis range (1-10,000 nm)
+- Default range: 100-3000 nm (UV to near-IR)
+- Automatically updates all curves when range changes
+
+### 4. **Spectral Radiance Comparison**
+- Compare spectral radiance values at any specific wavelength
+- Results displayed in scientific notation
+- Sorted from highest to lowest radiance
+
+## Physics Background
+
+The application uses **Planck's Law** to calculate spectral radiance:
+
+```
+B(λ,T) = (2hc²/λ⁵) × 1/(e^(hc/λkT) - 1)
+```
+
+Where:
+- B(λ,T) = Spectral radiance (W·sr⁻¹·m⁻³)
+- λ = Wavelength (m)
+- T = Temperature (K)
+- h = Planck's constant (6.626 × 10⁻³⁴ J·s)
+- c = Speed of light (2.998 × 10⁸ m/s)
+- k = Boltzmann constant (1.381 × 10⁻²³ J/K)
+
+## How to Use
+
+1. **Adding a Temperature Curve:**
+   - Enter a temperature value in the "Temperature (K)" field
+   - Click "Add Temperature"
+   - The curve will appear on the plot with a legend entry
+
+2. **Removing a Temperature Curve:**
+   - Select a temperature from the list
+   - Click "Remove Selected"
+
+3. **Changing Wavelength Range:**
+   - Enter minimum and maximum wavelength values (nm)
+   - Click "Update Range"
+   - All curves will be recalculated and redrawn
+
+4. **Comparing at a Specific Wavelength:**
+   - Enter a wavelength value in the comparison section
+   - Click "Compare"
+   - View the spectral radiance for all plotted temperatures at that wavelength
+
+## Technical Details
+
+- **Framework:** .NET 8 (Windows Forms)
+- **Charting Library:** ScottPlot 5.0
+- **Units:**
+  - Temperature: Kelvin (K)
+  - Wavelength: Nanometers (nm)
+  - Spectral Radiance: W·sr⁻¹·m⁻³
+
+## Applications
+
+This tool is useful for:
+- Understanding blackbody radiation physics
+- Astronomy and astrophysics education
+- Thermal radiation analysis
+- Comparison of stellar temperatures
+- Visualizing Wien's displacement law and Stefan-Boltzmann law
+
+## Notes
+
+- The Y-axis uses a logarithmic scale to accommodate the wide range of spectral radiance values
+- Colors are automatically assigned from a predefined palette
+- Up to 8 different colors are available before they repeat

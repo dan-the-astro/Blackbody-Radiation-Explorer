@@ -1,0 +1,353 @@
+﻿using ScottPlot;
+using ScottPlot.Plottables;
+using System.Drawing;
+
+namespace BlackbodyRadiationExplorer
+{
+    public partial class MainForm : Form
+    {
+        // Planck's constant (J·s)
+        private const double h = 6.62607015e-34;
+        // Speed of light (m/s)
+        private const double c = 2.99792458e8;
+        // Boltzmann constant (J/K)
+        private const double k = 1.380649e-23;
+
+        // Dictionary to store temperature and their corresponding plot lines
+        private Dictionary<double, Scatter> temperaturePlots = new Dictionary<double, Scatter>();
+
+        // Current wavelength range in nanometers
+        private double minWavelength = 100;
+        private double maxWavelength = 3000;
+
+        public MainForm()
+        {
+            InitializeComponent();
+            
+            // Attach event handlers
+            btnAddTemp.Click += btnAddTemp_Click;
+            btnRemoveTemp.Click += btnRemoveTemp_Click;
+            btnUpdateRange.Click += btnUpdateRange_Click;
+            btnCompare.Click += btnCompare_Click;
+            
+            this.Load += Form1_Load;
+        }
+
+        private void Form1_Load(object? sender, EventArgs e)
+        {
+            InitializePlot();
+        }
+
+        private void InitializePlot()
+        {
+            // Configure the plot
+            formsPlot1.Plot.Title("Blackbody Radiation Spectrum");
+            formsPlot1.Plot.XLabel("Wavelength (nm)");
+            formsPlot1.Plot.YLabel("Spectral Radiance (W·sr⁻¹·m⁻³)");
+            
+            // Set Y-axis to logarithmic scale - this is critical!
+            formsPlot1.Plot.ScaleFactor.Y = new ScottPlot.AxisScale.Log10Scale();
+            
+            // Set initial X-axis range
+            formsPlot1.Plot.Axes.SetLimitsX(minWavelength, maxWavelength);
+            
+            formsPlot1.Refresh();
+
+            // Add some default temperatures
+            AddTemperatureCurve(3000);
+            AddTemperatureCurve(5778); // Sun's temperature
+            AddTemperatureCurve(8000);
+        }
+
+        /// <summary>
+        /// Calculate spectral radiance using Planck's law
+        /// </summary>
+        /// <param name="wavelength">Wavelength in nanometers</param>
+        /// <param name="temperature">Temperature in Kelvin</param>
+        /// <returns>Spectral radiance in W·sr⁻¹·m⁻³</returns>
+        private double PlanckLaw(double wavelength, double temperature)
+        {
+            // Convert wavelength from nanometers to meters
+            double lambda = wavelength * 1e-9;
+
+            // Planck's law: B(λ,T) = (2hc²/λ⁵) * 1/(e^(hc/λkT) - 1)
+            double numerator = 2.0 * h * c * c;
+            double denominator = Math.Pow(lambda, 5) * (Math.Exp((h * c) / (lambda * k * temperature)) - 1.0);
+            
+            return numerator / denominator;
+        }
+
+        /// <summary>
+        /// Generate wavelength and spectral radiance data for a given temperature
+        /// </summary>
+        private (double[] wavelengths, double[] radiances) GenerateBlackbodyCurve(double temperature, int numPoints = 500)
+        {
+            double[] wavelengths = new double[numPoints];
+            double[] radiances = new double[numPoints];
+
+            // Generate logarithmically spaced wavelengths for better resolution
+            double logMin = Math.Log10(minWavelength);
+            double logMax = Math.Log10(maxWavelength);
+            double step = (logMax - logMin) / (numPoints - 1);
+
+            for (int i = 0; i < numPoints; i++)
+            {
+                wavelengths[i] = Math.Pow(10, logMin + i * step);
+                radiances[i] = PlanckLaw(wavelengths[i], temperature);
+            }
+
+            return (wavelengths, radiances);
+        }
+
+        /// <summary>
+        /// Add a temperature curve to the plot
+        /// </summary>
+        private void AddTemperatureCurve(double temperature)
+        {
+            // Check if temperature already exists
+            if (temperaturePlots.ContainsKey(temperature))
+            {
+                MessageBox.Show($"Temperature {temperature} K is already plotted.", "Duplicate Temperature", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Generate data
+            var (wavelengths, radiances) = GenerateBlackbodyCurve(temperature);
+
+            // Create scatter plot with line
+            var scatter = formsPlot1.Plot.Add.Scatter(wavelengths, radiances);
+            scatter.LineWidth = 2;
+            scatter.LegendText = $"{temperature} K";
+            scatter.MarkerSize = 0; // No markers, just line
+
+            // Assign a color from a palette
+            System.Drawing.Color[] colors = { 
+                System.Drawing.Color.Red, 
+                System.Drawing.Color.Blue, 
+                System.Drawing.Color.Green, 
+                System.Drawing.Color.Orange, 
+                System.Drawing.Color.Purple, 
+                System.Drawing.Color.Cyan, 
+                System.Drawing.Color.Magenta, 
+                System.Drawing.Color.Brown 
+            };
+            scatter.Color = ScottPlot.Color.FromColor(colors[temperaturePlots.Count % colors.Length]);
+
+            // Store the plot reference
+            temperaturePlots[temperature] = scatter;
+
+            // Update the listbox
+            lstTemperatures.Items.Add($"{temperature} K");
+
+            // Update the plot
+            UpdatePlot();
+        }
+
+        /// <summary>
+        /// Remove a temperature curve from the plot
+        /// </summary>
+        private void RemoveTemperatureCurve(double temperature)
+        {
+            if (temperaturePlots.ContainsKey(temperature))
+            {
+                var scatter = temperaturePlots[temperature];
+                formsPlot1.Plot.Remove(scatter);
+                temperaturePlots.Remove(temperature);
+
+                // Update the listbox
+                lstTemperatures.Items.Remove($"{temperature} K");
+
+                UpdatePlot();
+            }
+        }
+
+        /// <summary>
+        /// Update the plot with auto-scaling Y-axis
+        /// </summary>
+        private void UpdatePlot()
+        {
+            if (temperaturePlots.Count == 0)
+            {
+                // Set default range when no data
+                formsPlot1.Plot.Axes.SetLimitsY(1e5, 1e15);
+                formsPlot1.Refresh();
+                return;
+            }
+
+            // Auto-scale Y-axis based on visible data in the current wavelength range
+            double minY = double.MaxValue;
+            double maxY = double.MinValue;
+
+            foreach (var kvp in temperaturePlots)
+            {
+                var (wavelengths, radiances) = GenerateBlackbodyCurve(kvp.Key);
+                
+                for (int i = 0; i < wavelengths.Length; i++)
+                {
+                    if (wavelengths[i] >= minWavelength && wavelengths[i] <= maxWavelength)
+                    {
+                        if (radiances[i] > 0 && !double.IsInfinity(radiances[i]) && !double.IsNaN(radiances[i]))
+                        {
+                            minY = Math.Min(minY, radiances[i]);
+                            maxY = Math.Max(maxY, radiances[i]);
+                        }
+                    }
+                }
+            }
+
+            // Apply tight logarithmic scaling
+            if (minY != double.MaxValue && maxY != double.MinValue && minY > 0 && maxY > 0)
+            {
+                // Calculate padding in log space for better visual appearance
+                double logMin = Math.Log10(minY);
+                double logMax = Math.Log10(maxY);
+                double logRange = logMax - logMin;
+                
+                // Use minimal padding (5% in log space) for tighter fit
+                double padding = Math.Max(logRange * 0.05, 0.2); // At least 0.2 decades of padding
+                
+                double newMin = Math.Pow(10, logMin - padding);
+                double newMax = Math.Pow(10, logMax + padding);
+                
+                formsPlot1.Plot.Axes.SetLimitsY(newMin, newMax);
+            }
+            else
+            {
+                // Fallback to default range
+                formsPlot1.Plot.Axes.SetLimitsY(1e5, 1e15);
+            }
+
+            formsPlot1.Plot.ShowLegend();
+            formsPlot1.Refresh();
+        }
+
+        /// <summary>
+        /// Update all curves with new wavelength range
+        /// </summary>
+        private void UpdateAllCurves()
+        {
+            // Store current temperatures
+            var temperatures = temperaturePlots.Keys.ToList();
+
+            // Clear all plots
+            foreach (var temp in temperatures)
+            {
+                var scatter = temperaturePlots[temp];
+                formsPlot1.Plot.Remove(scatter);
+            }
+            temperaturePlots.Clear();
+
+            // Re-add all temperatures with new wavelength range
+            foreach (var temp in temperatures)
+            {
+                var (wavelengths, radiances) = GenerateBlackbodyCurve(temp);
+                var scatter = formsPlot1.Plot.Add.Scatter(wavelengths, radiances);
+                scatter.LineWidth = 2;
+                scatter.LegendText = $"{temp} K";
+                scatter.MarkerSize = 0;
+
+                System.Drawing.Color[] colors = { 
+                    System.Drawing.Color.Red, 
+                    System.Drawing.Color.Blue, 
+                    System.Drawing.Color.Green, 
+                    System.Drawing.Color.Orange, 
+                    System.Drawing.Color.Purple, 
+                    System.Drawing.Color.Cyan, 
+                    System.Drawing.Color.Magenta, 
+                    System.Drawing.Color.Brown 
+                };
+                int index = temperatures.IndexOf(temp);
+                scatter.Color = ScottPlot.Color.FromColor(colors[index % colors.Length]);
+
+                temperaturePlots[temp] = scatter;
+            }
+
+            // Update X-axis limits
+            formsPlot1.Plot.Axes.SetLimitsX(minWavelength, maxWavelength);
+
+            UpdatePlot();
+        }
+
+        // Event Handlers
+        private void btnAddTemp_Click(object? sender, EventArgs e)
+        {
+            double temperature = (double)numTemperature.Value;
+            AddTemperatureCurve(temperature);
+        }
+
+        private void btnRemoveTemp_Click(object? sender, EventArgs e)
+        {
+            if (lstTemperatures.SelectedIndex >= 0)
+            {
+                string? selected = lstTemperatures.SelectedItem?.ToString();
+                if (selected != null)
+                {
+                    // Extract temperature value from "XXXX K" format
+                    string tempStr = selected.Replace(" K", "");
+                    if (double.TryParse(tempStr, out double temperature))
+                    {
+                        RemoveTemperatureCurve(temperature);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a temperature to remove.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void btnUpdateRange_Click(object? sender, EventArgs e)
+        {
+            double newMin = (double)numMinWavelength.Value;
+            double newMax = (double)numMaxWavelength.Value;
+
+            if (newMin >= newMax)
+            {
+                MessageBox.Show("Minimum wavelength must be less than maximum wavelength.", "Invalid Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            minWavelength = newMin;
+            maxWavelength = newMax;
+
+            UpdateAllCurves();
+        }
+
+        private void btnCompare_Click(object? sender, EventArgs e)
+        {
+            if (temperaturePlots.Count == 0)
+            {
+                MessageBox.Show("Please add at least one temperature curve first.", "No Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            double wavelength = (double)numCompareWavelength.Value;
+
+            if (wavelength < minWavelength || wavelength > maxWavelength)
+            {
+                MessageBox.Show($"Wavelength {wavelength} nm is outside the current range ({minWavelength}-{maxWavelength} nm).", "Out of Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            // Calculate spectral radiance at this wavelength for all temperatures
+            List<(double temp, double radiance)> results = new List<(double, double)>();
+
+            foreach (var temp in temperaturePlots.Keys)
+            {
+                double radiance = PlanckLaw(wavelength, temp);
+                results.Add((temp, radiance));
+            }
+
+            // Sort by radiance (descending)
+            results.Sort((a, b) => b.radiance.CompareTo(a.radiance));
+
+            // Display results
+            string resultText = $"At λ = {wavelength} nm:\n\n";
+            foreach (var (temp, radiance) in results)
+            {
+                resultText += $"{temp} K: {radiance:E2} W·sr⁻¹·m⁻³\n";
+            }
+
+            lblComparisonResult.Text = resultText;
+        }
+    }
+}

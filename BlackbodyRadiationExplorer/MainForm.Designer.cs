@@ -1,0 +1,315 @@
+﻿namespace BlackbodyRadiationExplorer
+{
+    partial class MainForm
+    {
+        /// <summary>
+        ///  Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        ///  Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        ///  Required method for Designer support - do not modify
+        ///  the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            formsPlot1 = new ScottPlot.WinForms.FormsPlot();
+            grpTemperature = new GroupBox();
+            lstTemperatures = new ListBox();
+            btnRemoveTemp = new Button();
+            btnAddTemp = new Button();
+            numTemperature = new NumericUpDown();
+            lblTemperature = new Label();
+            grpWavelengthRange = new GroupBox();
+            numMaxWavelength = new NumericUpDown();
+            numMinWavelength = new NumericUpDown();
+            lblMaxWavelength = new Label();
+            lblMinWavelength = new Label();
+            btnUpdateRange = new Button();
+            grpComparison = new GroupBox();
+            lblComparisonResult = new Label();
+            btnCompare = new Button();
+            numCompareWavelength = new NumericUpDown();
+            lblCompareWavelength = new Label();
+            grpPlotOptions = new GroupBox();
+            chkLogScale = new CheckBox();
+            grpTemperature.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numTemperature).BeginInit();
+            grpWavelengthRange.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMaxWavelength).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numMinWavelength).BeginInit();
+            grpComparison.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numCompareWavelength).BeginInit();
+            grpPlotOptions.SuspendLayout();
+            SuspendLayout();
+            // 
+            // formsPlot1
+            // 
+            formsPlot1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            formsPlot1.DisplayScale = 1F;
+            formsPlot1.Location = new Point(12, 12);
+            formsPlot1.Name = "formsPlot1";
+            formsPlot1.Size = new Size(960, 740);
+            formsPlot1.TabIndex = 0;
+            // 
+            // grpTemperature
+            // 
+            grpTemperature.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            grpTemperature.Controls.Add(lstTemperatures);
+            grpTemperature.Controls.Add(btnRemoveTemp);
+            grpTemperature.Controls.Add(btnAddTemp);
+            grpTemperature.Controls.Add(numTemperature);
+            grpTemperature.Controls.Add(lblTemperature);
+            grpTemperature.Location = new Point(990, 12);
+            grpTemperature.Name = "grpTemperature";
+            grpTemperature.Size = new Size(280, 280);
+            grpTemperature.TabIndex = 1;
+            grpTemperature.TabStop = false;
+            grpTemperature.Text = "Temperature Control";
+            // 
+            // lstTemperatures
+            // 
+            lstTemperatures.FormattingEnabled = true;
+            lstTemperatures.ItemHeight = 15;
+            lstTemperatures.Location = new Point(15, 100);
+            lstTemperatures.Name = "lstTemperatures";
+            lstTemperatures.Size = new Size(250, 139);
+            lstTemperatures.TabIndex = 4;
+            // 
+            // btnRemoveTemp
+            // 
+            btnRemoveTemp.Location = new Point(145, 245);
+            btnRemoveTemp.Name = "btnRemoveTemp";
+            btnRemoveTemp.Size = new Size(120, 25);
+            btnRemoveTemp.TabIndex = 3;
+            btnRemoveTemp.Text = "Remove Selected";
+            btnRemoveTemp.UseVisualStyleBackColor = true;
+            // 
+            // btnAddTemp
+            // 
+            btnAddTemp.Location = new Point(15, 65);
+            btnAddTemp.Name = "btnAddTemp";
+            btnAddTemp.Size = new Size(250, 25);
+            btnAddTemp.TabIndex = 2;
+            btnAddTemp.Text = "Add Temperature";
+            btnAddTemp.UseVisualStyleBackColor = true;
+            // 
+            // numTemperature
+            // 
+            numTemperature.Location = new Point(15, 36);
+            numTemperature.Maximum = new decimal(new int[] { 50000, 0, 0, 0 });
+            numTemperature.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
+            numTemperature.Name = "numTemperature";
+            numTemperature.Size = new Size(250, 23);
+            numTemperature.TabIndex = 1;
+            numTemperature.Value = new decimal(new int[] { 5778, 0, 0, 0 });
+            // 
+            // lblTemperature
+            // 
+            lblTemperature.AutoSize = true;
+            lblTemperature.Location = new Point(15, 18);
+            lblTemperature.Name = "lblTemperature";
+            lblTemperature.Size = new Size(94, 15);
+            lblTemperature.TabIndex = 0;
+            lblTemperature.Text = "Temperature (K):";
+            // 
+            // grpWavelengthRange
+            // 
+            grpWavelengthRange.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            grpWavelengthRange.Controls.Add(numMaxWavelength);
+            grpWavelengthRange.Controls.Add(numMinWavelength);
+            grpWavelengthRange.Controls.Add(lblMaxWavelength);
+            grpWavelengthRange.Controls.Add(lblMinWavelength);
+            grpWavelengthRange.Controls.Add(btnUpdateRange);
+            grpWavelengthRange.Location = new Point(990, 298);
+            grpWavelengthRange.Name = "grpWavelengthRange";
+            grpWavelengthRange.Size = new Size(280, 150);
+            grpWavelengthRange.TabIndex = 2;
+            grpWavelengthRange.TabStop = false;
+            grpWavelengthRange.Text = "Wavelength Range (nm)";
+            // 
+            // numMaxWavelength
+            // 
+            numMaxWavelength.Location = new Point(15, 82);
+            numMaxWavelength.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numMaxWavelength.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
+            numMaxWavelength.Name = "numMaxWavelength";
+            numMaxWavelength.Size = new Size(250, 23);
+            numMaxWavelength.TabIndex = 4;
+            numMaxWavelength.Value = new decimal(new int[] { 3000, 0, 0, 0 });
+            // 
+            // numMinWavelength
+            // 
+            numMinWavelength.Location = new Point(15, 36);
+            numMinWavelength.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numMinWavelength.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numMinWavelength.Name = "numMinWavelength";
+            numMinWavelength.Size = new Size(250, 23);
+            numMinWavelength.TabIndex = 3;
+            numMinWavelength.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            // 
+            // lblMaxWavelength
+            // 
+            lblMaxWavelength.AutoSize = true;
+            lblMaxWavelength.Location = new Point(15, 64);
+            lblMaxWavelength.Name = "lblMaxWavelength";
+            lblMaxWavelength.Size = new Size(33, 15);
+            lblMaxWavelength.TabIndex = 2;
+            lblMaxWavelength.Text = "Max:";
+            // 
+            // lblMinWavelength
+            // 
+            lblMinWavelength.AutoSize = true;
+            lblMinWavelength.Location = new Point(15, 18);
+            lblMinWavelength.Name = "lblMinWavelength";
+            lblMinWavelength.Size = new Size(31, 15);
+            lblMinWavelength.TabIndex = 1;
+            lblMinWavelength.Text = "Min:";
+            // 
+            // btnUpdateRange
+            // 
+            btnUpdateRange.Location = new Point(15, 111);
+            btnUpdateRange.Name = "btnUpdateRange";
+            btnUpdateRange.Size = new Size(250, 25);
+            btnUpdateRange.TabIndex = 0;
+            btnUpdateRange.Text = "Update Range";
+            btnUpdateRange.UseVisualStyleBackColor = true;
+            // 
+            // grpComparison
+            // 
+            grpComparison.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            grpComparison.Controls.Add(lblComparisonResult);
+            grpComparison.Controls.Add(btnCompare);
+            grpComparison.Controls.Add(numCompareWavelength);
+            grpComparison.Controls.Add(lblCompareWavelength);
+            grpComparison.Location = new Point(990, 524);
+            grpComparison.Name = "grpComparison";
+            grpComparison.Size = new Size(280, 225);
+            grpComparison.TabIndex = 3;
+            grpComparison.TabStop = false;
+            grpComparison.Text = "Compare at Wavelength";
+            // 
+            // lblComparisonResult
+            // 
+            lblComparisonResult.Location = new Point(15, 93);
+            lblComparisonResult.Name = "lblComparisonResult";
+            lblComparisonResult.Size = new Size(250, 129);
+            lblComparisonResult.TabIndex = 3;
+            // 
+            // btnCompare
+            // 
+            btnCompare.Location = new Point(15, 65);
+            btnCompare.Name = "btnCompare";
+            btnCompare.Size = new Size(250, 25);
+            btnCompare.TabIndex = 2;
+            btnCompare.Text = "Compare";
+            btnCompare.UseVisualStyleBackColor = true;
+            // 
+            // numCompareWavelength
+            // 
+            numCompareWavelength.Location = new Point(15, 36);
+            numCompareWavelength.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numCompareWavelength.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numCompareWavelength.Name = "numCompareWavelength";
+            numCompareWavelength.Size = new Size(120, 23);
+            numCompareWavelength.TabIndex = 1;
+            numCompareWavelength.Value = new decimal(new int[] { 500, 0, 0, 0 });
+            // 
+            // lblCompareWavelength
+            // 
+            lblCompareWavelength.AutoSize = true;
+            lblCompareWavelength.Location = new Point(15, 18);
+            lblCompareWavelength.Name = "lblCompareWavelength";
+            lblCompareWavelength.Size = new Size(102, 15);
+            lblCompareWavelength.TabIndex = 0;
+            lblCompareWavelength.Text = "Wavelength (nm):";
+            // 
+            // grpPlotOptions
+            // 
+            grpPlotOptions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            grpPlotOptions.Controls.Add(chkLogScale);
+            grpPlotOptions.Location = new Point(990, 454);
+            grpPlotOptions.Name = "grpPlotOptions";
+            grpPlotOptions.Size = new Size(280, 64);
+            grpPlotOptions.TabIndex = 4;
+            grpPlotOptions.TabStop = false;
+            grpPlotOptions.Text = "Display Options";
+            // 
+            // chkLogScale
+            // 
+            chkLogScale.AutoSize = true;
+            chkLogScale.Checked = true;
+            chkLogScale.CheckState = CheckState.Checked;
+            chkLogScale.Location = new Point(15, 28);
+            chkLogScale.Name = "chkLogScale";
+            chkLogScale.Size = new Size(127, 19);
+            chkLogScale.TabIndex = 0;
+            chkLogScale.Text = "Logarithmic Y-Axis";
+            chkLogScale.UseVisualStyleBackColor = true;
+            // 
+            // MainForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1284, 761);
+            Controls.Add(grpPlotOptions);
+            Controls.Add(grpComparison);
+            Controls.Add(grpWavelengthRange);
+            Controls.Add(grpTemperature);
+            Controls.Add(formsPlot1);
+            Name = "MainForm";
+            Text = "Blackbody Radiation Explorer";
+            grpTemperature.ResumeLayout(false);
+            grpTemperature.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numTemperature).EndInit();
+            grpWavelengthRange.ResumeLayout(false);
+            grpWavelengthRange.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMaxWavelength).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numMinWavelength).EndInit();
+            grpComparison.ResumeLayout(false);
+            grpComparison.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numCompareWavelength).EndInit();
+            grpPlotOptions.ResumeLayout(false);
+            grpPlotOptions.PerformLayout();
+            ResumeLayout(false);
+        }
+
+        #endregion
+
+        private ScottPlot.WinForms.FormsPlot formsPlot1;
+        private GroupBox grpTemperature;
+        private NumericUpDown numTemperature;
+        private Label lblTemperature;
+        private Button btnAddTemp;
+        private Button btnRemoveTemp;
+        private ListBox lstTemperatures;
+        private GroupBox grpWavelengthRange;
+        private NumericUpDown numMaxWavelength;
+        private NumericUpDown numMinWavelength;
+        private Label lblMaxWavelength;
+        private Label lblMinWavelength;
+        private Button btnUpdateRange;
+        private GroupBox grpComparison;
+        private NumericUpDown numCompareWavelength;
+        private Label lblCompareWavelength;
+        private Button btnCompare;
+        private Label lblComparisonResult;
+        private GroupBox grpPlotOptions;
+        private CheckBox chkLogScale;
+    }
+}
